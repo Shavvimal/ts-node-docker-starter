@@ -31,11 +31,11 @@ npm run start
 Alpine linux is a lighter weight version of linux and does not come with the same base libraries as other distributions (like glibc). To build the docker image, run the following command:
 
 ```bash
-docker build -t producer .
+docker build -t <name> .
 ```
 
 To run the docker image, run the following command:
 
 ```bash
-docker run -i --env-file .env --name producer producer
+docker run -i --env-file .env --name <name> <name>
 ```
