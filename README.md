@@ -39,3 +39,7 @@ To run the docker image, run the following command:
 ```bash
 docker run -i --env-file .env --name <name> <name>
 ```
+
+## TypeScript Best Practices
+
+- From [AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/best-practices-cdk-typescript-iac/typescript-best-practices.html)
