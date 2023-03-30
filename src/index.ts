@@ -159,3 +159,54 @@ const { scope, objname } = object;
  * The protected modifier allows properties and methods of a class to be accessible within the same class and within subclasses.
  * Use the protected modifier when you expect to create subclasses
  */
+
+// * ================================================================================================================================
+//  Discriminating Unions
+//  Discriminating Unions are a way to create a union of types that all have a common property.
+//  https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html
+
+type NetworkLoadingState = {
+  state: "loading";
+};
+type NetworkFailedState = {
+  state: "failed";
+  code: number;
+};
+type NetworkSuccessState = {
+  state: "success";
+  response: {
+    title: string;
+    duration: number;
+    summary: string;
+  };
+};
+// Create a type which represents only one of the above types
+// but you aren't sure which it is yet.
+type NetworkState =
+  | NetworkLoadingState
+  | NetworkFailedState
+  | NetworkSuccessState;
+
+function logger(state: NetworkState): string {
+  // Right now TypeScript does not know which of the three
+  // potential types state could be.
+
+  // Trying to access a property which isn't shared
+  // across all types will raise an error
+  state.code;
+  // Property 'code' does not exist on type 'NetworkState'.
+  //   Property 'code' does not exist on type 'NetworkLoadingState'.
+
+  // By switching on state, TypeScript can narrow the union
+  // down in code flow analysis
+  switch (state.state) {
+    case "loading":
+      return "Downloading...";
+    case "failed":
+      // The type must be NetworkFailedState here,
+      // so accessing the `code` field is safe
+      return `Error ${state.code} downloading`;
+    case "success":
+      return `Downloaded ${state.response.title} - ${state.response.summary}`;
+  }
+}
